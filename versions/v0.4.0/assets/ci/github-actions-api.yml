@@ -1,0 +1,30 @@
+# Gate de contrato de API (schematize-api). Actions pinadas por SHA completo.
+# Piso 27: o gate por commit é LOCAL (scripts/check-api.sh no tools/ci.sh). Este workflow roda
+# só sob demanda (workflow_dispatch) ou antes de promover (tag hml-*/v*) — VETADO pull_request.
+name: api-contrato
+on:
+  workflow_dispatch:
+  push:
+    tags: ["hml-*", "v*"]
+concurrency:
+  group: api-contrato-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  contrato:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Gate estático do contrato
+        run: bash scripts/check-api.sh .
+      - name: Diff de compatibilidade (OpenAPI) contra a tag anterior
+        run: |
+          # Base = tag de promoção anterior a esta (hml-*/v*); sem tag anterior, não há o que comparar.
+          # oasdiff ausente => o gate AVISA (não aprova por omissão).
+          prev="$(git describe --tags --abbrev=0 --match 'hml-*' --match 'v*' "${GITHUB_SHA}^" 2>/dev/null)" || exit 0
+          base="$(mktemp)"
+          git show "${prev}:openapi.yaml" > "$base" 2>/dev/null || exit 0
+          API_BASE="$base" bash scripts/check-api.sh openapi.yaml
