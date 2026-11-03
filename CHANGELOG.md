@@ -3,7 +3,7 @@
 Todas as mudanças relevantes deste pacote, no formato [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 com versionamento [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não lançado]
+## [0.4.0] — 2026-11-03
 ### Corrigido
 - `assets/ci/github-actions-api.yml`: sai `pull_request`; `workflow_dispatch` + tags `hml-*`/`v*`, `concurrency` com cancel-in-progress, base do diff = tag anterior (piso 27). Textos "no PR" → local por commit + pré-hml.
 ### Adicionado
