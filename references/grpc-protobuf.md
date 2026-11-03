@@ -29,7 +29,7 @@ máquina.
 
 - **Removeu campo? `reserved 4; reserved "nome_antigo";`** — impede reaproveitar número/nome por engano.
 - `optional` explícito quando "ausente" difere de "zero". `oneof` para exclusão mútua.
-- `buf breaking --against '.git#branch=main'` no PR (via `API_PROTO_AGAINST`).
+- `buf breaking --against '.git#branch=main'` local por commit e no CI pré-hml (via `API_PROTO_AGAINST`, contra o último marco).
 
 ## 3. Erros e metadados
 

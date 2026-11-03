@@ -3,6 +3,12 @@
 Todas as mudanças relevantes deste pacote, no formato [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 com versionamento [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+### Corrigido
+- `assets/ci/github-actions-api.yml`: sai `pull_request`; `workflow_dispatch` + tags `hml-*`/`v*`, `concurrency` com cancel-in-progress, base do diff = tag anterior (piso 27). Textos "no PR" → local por commit + pré-hml.
+### Adicionado
+- Ligação do OpenAPI com a matriz de acesso (`check-route-authz.sh`, piso 20); bloco "Herda os pisos 22–29"; teste do template de CI.
+
 ## [0.3.0] — 2026-10-15
 ### Alterado
 - Fronteira e relação ganham `schematize-regression` (regressão de contrato no CI); breaking change e

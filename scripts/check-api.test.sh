@@ -349,6 +349,9 @@ package empresa.pedidos.v1;
 FIX
 saida="$(PATH="$SEMFERR" bash "$G" "$D" 2>&1)"; rc=$?
 if [ "$rc" = 0 ] && grep -qF "buf ausente" <<<"$saida"; then echo "  ✔ buf-ausente avisa"; ok=$((ok+1)); else echo "  ✖ buf-ausente: rc=$rc"; echo "$saida"; fail=$((fail+1)); fi
+# Template de CI (piso 27): sem pull_request, com dispatch + tags e concurrency.
+WF="$(dirname "$G")/../assets/ci/github-actions-api.yml"
+if ! grep -Eq '^[[:space:]]*pull_request' "$WF" && grep -q 'workflow_dispatch' "$WF" && grep -q 'tags: \["hml-\*", "v\*"\]' "$WF" && grep -q 'cancel-in-progress: true' "$WF"; then echo "  ✔ template de CI: dispatch+tags, sem PR"; ok=$((ok+1)); else echo "  ✖ template de CI viola o piso 27"; fail=$((fail+1)); fi
 
 echo
 echo "check-api.test: $ok ok, $fail falha(s)"

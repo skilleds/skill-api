@@ -36,7 +36,7 @@ qualquer adição é potencialmente breaking.
   binário, **avisa** que a quebra não foi verificada (nunca verde por omissão).
 - **Protobuf**: `buf breaking --against '.git#branch=main'` (regras `FILE` ou `WIRE_JSON`);
   `check-api.sh` roda com `API_PROTO_AGAINST`.
-- No CI do PR: base = branch alvo. A spec antiga vem do git (`git show main:openapi.yaml`).
+- No `ci.sh` local e no CI pré-hml: base = última tag de promoção (`hml-*`/`v*`). A spec antiga vem do git (`git show <tag>:openapi.yaml`).
 - **Consumer-driven contract tests** (Pact ou equivalente) quando há consumidor interno conhecido:
   pega o que o diff de spec não pega (uso de campo "não documentado").
 

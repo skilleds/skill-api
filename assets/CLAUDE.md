@@ -14,7 +14,7 @@ O contrato é o produto. Quebrá-lo é cobrar de quem você não vê.
 6. **Webhook**: HMAC por endpoint + `id` + `timestamp` + janela de replay; emissor com outbox, retry
    com jitter, DLQ e anti-SSRF; receptor com corpo cru, tempo constante, dedupe e `2xx` rápido.
    *At-least-once*, nunca exactly-once.
-7. **Breaking sem ADR e plano com data não entra.** `oasdiff breaking` / `buf breaking` no PR.
+7. **Breaking sem ADR e plano com data não entra.** `oasdiff breaking` / `buf breaking` local por commit, contra o último marco (sem PR).
 8. **Deprecar = `deprecated` + `Deprecation` + `Sunset` + link de migração**; `410` na data.
 9. **Escrita concorrente com `If-Match`/ETag** (412/428). **Limite de taxa** responde 429 com `Retry-After`.
 10. **Teto em todo campo de entrada**; dinheiro em inteiro de menor unidade, nunca `float`.
@@ -25,3 +25,5 @@ Mídia: imagem/visual gerado nunca por modelo Claude; detecte Codex/Gemini e per
 
 Gate: `bash .claude/skills/schematize-api/scripts/check-api.sh .` — waiver rastreável na operação:
 `x-api-ok: ["<regra>: <motivo>"]`.
+
+Herda os pisos 22–29 da `schematize-engineering` (git como trava de conclusão, deploy só do git, ops é o gate da IA, sem agents inúteis, relatório 30 min/handoff 6 h, CI remoto só antes do hml, microserviço autônomo, build em dev/hml + higiene).

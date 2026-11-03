@@ -102,7 +102,7 @@ Mapa de references:
 | Versões, drafts IETF e ferramentas com data (anexo volátil) | `references/stack-versoes.md` |
 
 Assets prontos: `assets/exemplos/openapi-minimo.yaml` (contrato que passa no gate, com cursor, idempotência,
-ETag, problem+json e webhook assinado) · `assets/ci/github-actions-api.yml` (gate no PR, actions pinadas por SHA).
+ETag, problem+json e webhook assinado) · `assets/ci/github-actions-api.yml` (gate pré-hml: dispatch + tags, sem PR; actions pinadas por SHA).
 
 ## Pisos inegociáveis (vetam o atalho)
 
@@ -121,7 +121,7 @@ ETag, problem+json e webhook assinado) · `assets/ci/github-actions-api.yml` (ga
    backoff e jitter, DLQ, outbox, anti-SSRF. Recepção: corpo cru, timestamp, HMAC em tempo constante,
    dedupe por `id`, `2xx` rápido. Entrega é *at-least-once*; nunca prometa exactly-once.
 7. **Breaking change nunca entra sem ADR e plano com data.** O diff de compatibilidade (`oasdiff`,
-   `buf breaking`) roda no CI do PR contra a branch alvo.
+   `buf breaking`) roda local no `ci.sh` por commit (contra o último marco `hml-*`/`v*`) e no CI remoto só antes do hml.
 8. **Deprecar é dar data:** `deprecated: true` + `Deprecation` + `Sunset` + link de migração, uso medido
    por cliente, `410 Gone` na data.
 9. **Escrita concorrente usa `If-Match`/ETag** (`412`/`428`), não "o último ganha".
@@ -153,5 +153,8 @@ de banco com licença comercial, ou asset do cliente. Claude é o melhor em cód
 - **`schematize-qa`** transforma "duas requisições com a mesma chave produzem um efeito" em teste.
 - **`schematize-regression`** cruza no CI: o diff de breaking change e a deprecação com data seguem
   **aqui**; o teste que impede o defeito de contrato já corrigido de voltar é o ciclo de lá.
+- **`schematize-qa`** (`check-route-authz.sh`): o OpenAPI é a fonte do inventário de rotas da matriz de acesso (piso 20, M == N); operação sem `security` ou fora da allowlist de públicas = rota sem linha na matriz.
 - **`schematize-pentest`** ataca o que aqui se constrói: BOLA, SSRF, abuso de limite, replay.
 - **`schematize-observability`** liga erro e trace por `trace_id` e mede SLO por endpoint.
+
+Herda os pisos 22–29 da `schematize-engineering` (git como trava de conclusão, deploy só do git, ops é o gate da IA, sem agents inúteis, relatório 30 min/handoff 6 h, CI remoto só antes do hml, microserviço autônomo, build em dev/hml + higiene).
